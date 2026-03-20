@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>業務マニュアルアプリ - コード取得</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',Meiryo,sans-serif;
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  min-height:100vh;
+  padding:20px 16px;
+  color:#1e293b;
+}
+.container{max-width:600px;margin:0 auto;}
+.card{
+  background:#fff;
+  border-radius:20px;
+  padding:24px 20px;
+  margin-bottom:16px;
+  box-shadow:0 10px 40px rgba(0,0,0,.2);
+}
+h1{
+  font-size:22px;
+  font-weight:800;
+  text-align:center;
+  margin-bottom:8px;
+  color:#1e293b;
+  letter-spacing:-0.5px;
+}
+.subtitle{
+  text-align:center;
+  font-size:13px;
+  color:#64748b;
+  margin-bottom:20px;
+  line-height:1.6;
+}
+.badge-row{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+.badge{
+  background:#dbeafe;
+  color:#2563eb;
+  font-size:12px;
+  font-weight:700;
+  padding:6px 12px;
+  border-radius:20px;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+}
+.badge.green{background:#dcfce7;color:#059669;}
+.badge.purple{background:#ede9fe;color:#7c3aed;}
+h2{
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:14px;
+  color:#1e293b;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.alert{
+  background:#fef3c7;
+  border-left:4px solid #f59e0b;
+  border-radius:8px;
+  padding:14px 16px;
+  font-size:13px;
+  color:#92400e;
+  margin-bottom:16px;
+  line-height:1.7;
+}
+.alert strong{color:#78350f;}
+.step-list{
+  background:#f8fafc;
+  border-radius:12px;
+  padding:16px;
+  margin-bottom:16px;
+}
+.step{
+  display:flex;
+  gap:12px;
+  margin-bottom:12px;
+  align-items:flex-start;
+}
+.step:last-child{margin-bottom:0;}
+.step-num{
+  width:26px;
+  height:26px;
+  background:#2563eb;
+  color:#fff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  font-weight:700;
+  flex-shrink:0;
+}
+.step-text{
+  flex:1;
+  font-size:14px;
+  line-height:1.7;
+  color:#475569;
+}
+.step-text strong{color:#1e293b;}
+.code-container{
+  background:#0f172a;
+  border-radius:12px;
+  padding:16px;
+  margin-bottom:16px;
+  position:relative;
+}
+.code-label{
+  color:#94a3b8;
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin-bottom:10px;
+}
+#code-area{
+  width:100%;
+  height:160px;
+  background:#1e293b;
+  color:#e2e8f0;
+  border:2px solid #334155;
+  border-radius:8px;
+  padding:12px;
+  font-family:'Courier New',monospace;
+  font-size:10px;
+  line-height:1.5;
+  resize:none;
+  outline:none;
+  -webkit-user-select:all;
+  user-select:all;
+}
+#code-area:focus{
+  border-color:#3b82f6;
+  box-shadow:0 0 0 3px rgba(59,130,246,.2);
+}
+.btn-group{
+  display:flex;
+  gap:10px;
+  margin-bottom:12px;
+}
+.btn{
+  flex:1;
+  border:none;
+  border-radius:12px;
+  padding:16px 20px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .2s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.btn:active{transform:scale(.97);}
+.btn-primary{
+  background:linear-gradient(135deg,#3b82f6,#8b5cf6);
+  color:#fff;
+  box-shadow:0 4px 15px rgba(59,130,246,.4);
+}
+.btn-primary:active{background:linear-gradient(135deg,#2563eb,#7c3aed);}
+.btn-secondary{
+  background:#f1f5f9;
+  color:#475569;
+  border:2px solid #e2e8f0;
+}
+.btn-secondary:active{background:#e2e8f0;}
+.success-msg{
+  background:#d1fae5;
+  border-left:4px solid #10b981;
+  border-radius:8px;
+  padding:12px 16px;
+  font-size:14px;
+  color:#065f46;
+  font-weight:600;
+  display:none;
+  margin-top:12px;
+}
+.success-msg.show{display:block;animation:slideIn .3s ease;}
+@keyframes slideIn{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+.note{
+  font-size:12px;
+  color:#94a3b8;
+  text-align:center;
+  line-height:1.6;
+  margin-top:8px;
+}
+.divider{
+  height:1px;
+  background:linear-gradient(to right,transparent,#e2e8f0,transparent);
+  margin:20px 0;
+}
+code{
+  background:#f1f5f9;
+  color:#e11d48;
+  padding:2px 6px;
+  border-radius:4px;
+  font-size:13px;
+  font-family:monospace;
+}
+@media(max-width:480px){
+  body{padding:12px;}
+  .card{padding:20px 16px;}
+  h1{font-size:20px;}
+  .btn{padding:14px 16px;font-size:15px;}
+  .btn-group{flex-direction:column;}
+  #code-area{height:140px;font-size:9px;}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="card">
+    <h1>📋 業務マニュアルアプリ</h1>
+    <p class="subtitle">
+      iPhoneからGitHubに貼り付けるだけで<br>
+      完全無料で使える業務マニュアル管理システム
+    </p>
+    <div class="badge-row">
+      <span class="badge">📱 iPhone対応</span>
+      <span class="badge">💻 PC対応</span>
+      <span class="badge green">✅ 完全無料</span>
+      <span class="badge purple">🔒 情報漏洩なし</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📋 ステップ1｜コードをコピー</h2>
+    <div class="alert">
+      <strong>⚠️ iPhone Safari向けの注意</strong><br>
+      下のテキストエリアを<strong>タップして全選択</strong>してから、画面上の「コピー」をタップしてください。
+    </div>
+    
+    <div class="code-container">
+      <div class="code-label">📄 アプリコード（約60KB）</div>
+      <textarea id="code-area" readonly>ここに index.html のコード全文を貼り付けてください。</textarea>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="copyCode()">
+        📋 クリックでコピー
+      </button>
+      <button class="btn btn-secondary" onclick="selectCode()">
+        👆 全選択
+      </button>
+    </div>
+    
+    <div class="success-msg" id="success-msg">
+      ✅ コピー完了！次はGitHubに貼り付けてください
+    </div>
+    
+    <p class="note">
+      ボタンが動かない場合：<br>
+      テキストエリアを長押し → 全選択 → コピー
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>🐙 ステップ2｜GitHubに貼り付け</h2>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <strong>github.com</strong> を開いてログイン
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          右上「<strong>＋</strong>」→「<strong>New repository</strong>」
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          Repository name: <code>manual-app</code><br>
+          <strong>Public</strong> を選択 → <strong>Create repository</strong>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text">
+          「<strong>creating a new file</strong>」をタップ
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-text">
+          ファイル名: <code>index.html</code><br>
+          本文に<strong>コピーしたコードを貼り付け</strong>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-text">
+          <strong>Commit new file</strong> をタップ
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🌐 ステップ3｜公開URLを取得</h2>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <strong>Settings</strong> → <strong>Pages</strong> をタップ
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          Branch: <strong>main</strong><br>
+          Folder: <strong>そのまま（何も選択しない）</strong><br>
+          → <strong>Save</strong> をタップ
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          数分後、緑のメッセージにURLが表示される<br>
+          <code>https://ユーザー名.github.io/manual-app/</code><br>
+          このURLを<strong>長押し → コピー</strong>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text">
+          SafariでURLを開く → 画面下「共有」→<br>
+          「<strong>ホーム画面に追加</strong>」でアプリ化完了🎉
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>✨ 搭載機能</h2>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-num">📁</div>
+        <div class="step-text">
+          <strong>2階層カテゴリー管理</strong><br>
+          大カテゴリー → 中カテゴリーで階層整理
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">🔢</div>
+        <div class="step-text">
+          <strong>工程ごとの詳細記録</strong><br>
+          作業内容・ポイント・注意事項を管理
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">🖼️</div>
+        <div class="step-text">
+          <strong>写真・動画アップロード</strong><br>
+          ドラッグ&ドロップで自由に追加（最大20MB）
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">🖨️</div>
+        <div class="step-text">
+          <strong>A4印刷最適化</strong><br>
+          ボタン1つで綺麗に印刷できます
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">📜</div>
+        <div class="step-text">
+          <strong>変更履歴10件保存</strong><br>
+          Ctrl+Z（Cmd+Z）で元に戻せます
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">🌙</div>
+        <div class="step-text">
+          <strong>ダークモード対応</strong><br>
+          目に優しい暗いテーマに切り替え可能
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function copyCode(){
+  const textarea = document.getElementById('code-area');
+  const successMsg = document.getElementById('success-msg');
+  
+  textarea.removeAttribute('readonly');
+  textarea.focus();
+  textarea.select();
+  
+  if(navigator.userAgent.match(/ipad|iphone/i)){
+    const range = document.createRange();
+    range.selectNodeContents(textarea);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    textarea.setSelectionRange(0,999999);
+  }
+  
+  let success = false;
+  try{
+    success = document.execCommand('copy');
+  }catch(err){
+    console.error('Copy failed:',err);
+  }
+  
+  textarea.setAttribute('readonly','');
+  
+  if(success){
+    successMsg.classList.add('show');
+    setTimeout(()=>{
+      successMsg.classList.remove('show');
+    },4000);
+  }else{
+    alert('自動コピーに失敗しました。\n\nテキストエリアを長押しして\n「全選択」→「コピー」してください。');
+  }
+}
+
+function selectCode(){
+  const textarea = document.getElementById('code-area');
+  textarea.removeAttribute('readonly');
+  textarea.focus();
+  textarea.select();
+  
+  if(navigator.userAgent.match(/ipad|iphone/i)){
+    const range = document.createRange();
+    range.selectNodeContents(textarea);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    textarea.setSelectionRange(0,999999);
+  }
+  
+  textarea.setAttribute('readonly','');
+  alert('全選択しました。\n画面上の「コピー」をタップしてください。');
+}
+</script>
+
+</body>
+</html>
